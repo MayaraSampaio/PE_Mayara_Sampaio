@@ -144,6 +144,7 @@ public class Main {
                     break;
 
                 case 7://Espetáculo mais rentável
+                    espetaculoMaisRentavel(matrizInteracoes);
                     break;
 
                 case 8://Ranking de animais em perigo de extinção
@@ -442,6 +443,50 @@ public class Main {
         }
     }
 
+    /**
+     * Função para descobrir o mais rentável
+     * @param matrizInteracoes
+     * @return
+     */
+    public static void espetaculoMaisRentavel(String[][] matrizInteracoes){
+
+        String nomeEventoAtual,idAnimalEspetaculoMaisRentavel="", nomeEspetaculoMaisRentavel="";
+        double rendimentoEspetaculoMaisRentavel=0;
+
+
+        for (int linha = 0; linha < matrizInteracoes.length; linha++) {
+            if (matrizInteracoes[linha][2].equals("ESPETACULO")) {
+
+                // declarar as variaveis com valores atuais
+                nomeEventoAtual = matrizInteracoes[linha][4];
+                double rendimentoTotalEventoAtual=0;
+
+                // calcular o rendimento do evento (ESPETACULO) atual
+                for (int linhaBusca = 0; linhaBusca < matrizInteracoes.length; linhaBusca++) {
+                    if(matrizInteracoes[linhaBusca][4].equals(nomeEventoAtual) && matrizInteracoes[linhaBusca][2].equals("ESPETACULO")){
+                        rendimentoTotalEventoAtual+=Double.parseDouble(matrizInteracoes[linhaBusca][5]);
+                    }
+                }
+
+                if(rendimentoTotalEventoAtual>rendimentoEspetaculoMaisRentavel){
+                    nomeEspetaculoMaisRentavel=nomeEventoAtual;
+                    rendimentoEspetaculoMaisRentavel=rendimentoTotalEventoAtual;
+                    idAnimalEspetaculoMaisRentavel=matrizInteracoes[linha][3];
+                }
+
+
+
+            }
+        }
+
+        System.out.println("Nome Espetaculo mais rentavel: "+nomeEspetaculoMaisRentavel);
+        System.out.println("ID Animal: "+idAnimalEspetaculoMaisRentavel);
+        System.out.println("Valor arrecadado: "+rendimentoEspetaculoMaisRentavel);
+
+    }
+
+
+
 
 
 
@@ -451,7 +496,7 @@ public class Main {
 
         String[][] matrizAnimais = ficheiroParaMatriz("ficheiro/animais.csv");
         String[][] matrizClientes = ficheiroParaMatriz("ficheiro/clientes.csv");
-        String[][] matrizInteracoes = ficheiroParaMatriz("ficheiro/interacoes.csv");
+        String[][] matrizInteracoes = ficheiroParaMatriz("ficheiro/interacoesTeste.csv");
 
 
         menuEntrada(matrizAnimais,matrizClientes,matrizInteracoes);

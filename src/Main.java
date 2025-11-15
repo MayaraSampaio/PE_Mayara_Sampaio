@@ -7,7 +7,6 @@ import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Main {
-
     /**
      * Função para invocar o menu de entrada com opção ADMIN,CLIENTE e SAIR
      */
@@ -146,9 +145,11 @@ public class Main {
                     break;
 
                 case 8://Ranking de animais em perigo de extinção
+
                     break;
 
                 case 9://Estatísticas por habitat
+                    estatisticasPorHabitat(matrizAnimais,matrizInteracoes);
                     break;
 
                 case 10:
@@ -161,7 +162,6 @@ public class Main {
             }
         } while (opcao != 0);
     }
-
     /**
      * Função para invocar o Menu Cliente e mostrar opções para este tipo de usuário
      */
@@ -187,6 +187,7 @@ public class Main {
                     break;
 
                 case 2: // Estatísticas gerais de interações
+                    imprimirAnimaisHabitat(matrizAnimais);
 
                     break;
 
@@ -208,7 +209,6 @@ public class Main {
             }
         }while (opcao != 0);
     }
-
     /**
      * Função para contar linhas do ficheiro
      * @param caminho
@@ -230,7 +230,6 @@ public class Main {
         return contadorLinhas;
 
     }
-
     /**
      * Função para ler os ficheiros para uma matriz
      * @param caminho
@@ -552,7 +551,6 @@ public class Main {
         }
         return contagemAnimais;
     }
-
     /**
      *Função para separar os animais pertencentes a cada habitat
      * @param matrizAnimais
@@ -570,7 +568,6 @@ public class Main {
                 indexDisponivel++;
             }
         }
-
         int quantidadeAnimais = indexDisponivel;
 
         String[] animaisDoHabitatMedida = new String[quantidadeAnimais];
@@ -599,7 +596,6 @@ public class Main {
         }
         return contagemInteracoes;
     }
-
     /**
      * Função para calcular os rendimentos de um animal
      * @param matrizInteracoes
@@ -618,7 +614,6 @@ public class Main {
         }
         return rendimentoTotal;
     }
-
     /**
      * Função para imprimir as estaisticas por habitat
      * @param matrizAnimais
@@ -649,7 +644,6 @@ public class Main {
 
         }
     }
-
     /**
      * Função para retornar o nome do animal por um id
      * @param matrizAnimais
@@ -665,7 +659,6 @@ public class Main {
 
         return "N/A";
     }
-
     /**
      * Função para imprmir a especie do animal por um id animal
      * @param matrizAnimais
@@ -682,6 +675,15 @@ public class Main {
         return "N/A";
     }
 
+    public static String imprimirAnimalPorHabitat(String[][] matrizAnimais, String idAnimal){
+        String nomeHabitat= "";
+        for (int buscaHabitatLinha = 0; buscaHabitatLinha < matrizAnimais.length;buscaHabitatLinha++){
+          if (matrizAnimais[buscaHabitatLinha][0].equals(idAnimal)){
+            nomeHabitat = matrizAnimais[buscaHabitatLinha][3];
+          }
+        }
+       return nomeHabitat;
+    }
     /**
      * Função para imprimir os animais por habitat
      * @param matrizAnimais
@@ -702,6 +704,40 @@ public class Main {
             System.out.println();
         }
     }
+    /**
+     * Funções animal mais popular
+     * @param matrizInteracoes
+     * @param matrizAnimal
+     */
+    public static void animalMaisPopular(String[][] matrizInteracoes, String[][] matrizAnimal){
+
+        String animalAtual,idAnimalMaisPouplar="";
+        int quantasVezesPossuiInteracaoAtual = 0 ,quantidadeDeInteracoesDoMaisPopular =0;
+
+        for (int linha = 0; linha < matrizInteracoes.length; linha++) {
+
+                // declarar as variaveis com valores atuais
+                animalAtual = matrizInteracoes[linha][3];
+                quantasVezesPossuiInteracaoAtual =0;
+
+                    for (int linhaBusca = 0; linhaBusca < matrizInteracoes.length; linhaBusca++) {
+                    if(matrizInteracoes[linhaBusca][3].equals(animalAtual)){
+                        quantasVezesPossuiInteracaoAtual++;
+                    }
+                }
+                if(quantasVezesPossuiInteracaoAtual>quantidadeDeInteracoesDoMaisPopular){
+                    quantidadeDeInteracoesDoMaisPopular=quantasVezesPossuiInteracaoAtual;
+                    idAnimalMaisPouplar=matrizInteracoes[linha][3];
+                }
+            }
+        System.out.println("Nome: " + nomeAnimal(matrizAnimal,idAnimalMaisPouplar) );
+        System.out.println("Espécie: " + especieAnimal(matrizAnimal,idAnimalMaisPouplar));
+        System.out.println("Habitat: " + imprimirAnimalPorHabitat(matrizAnimal,idAnimalMaisPouplar));
+        System.out.println("Numero de Interaçoes " + quantasVezesPossuiInteracaoAtual );
+    }
+
+
+
 
 
 
@@ -713,7 +749,8 @@ public class Main {
         String[][] matrizInteracoes = ficheiroParaMatriz("ficheiro/interacoesTeste.csv");
 
 
-        menuEntrada(matrizAnimais,matrizClientes,matrizInteracoes);
+        animalMaisPopular(matrizInteracoes,matrizAnimais);
+        //menuEntrada(matrizAnimais,matrizClientes,matrizInteracoes);
 
     }
 }

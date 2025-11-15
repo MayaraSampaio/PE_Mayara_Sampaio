@@ -7,8 +7,6 @@ import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Main {
-    //TODO
-    //todas as funções receberão as matrizes como parametro
 
     /**
      * Função para invocar o menu de entrada com opção ADMIN,CLIENTE e SAIR
@@ -211,8 +209,6 @@ public class Main {
         }while (opcao != 0);
     }
 
-
-
     /**
      * Função para contar linhas do ficheiro
      * @param caminho
@@ -354,7 +350,12 @@ public class Main {
             System.out.println(linha);
         }
     }
-    //FUNÇÃO PARA INSERIR O PATH DE ACORDO COM O PATH ESCOLHIDO
+
+    /**
+     * Função para escolher o path de acordo com a opção escolhida
+     * @param escolhaDoCaminho
+     * @return o path do arquivo csv escolhido
+     */
     public static String escolherCaminho(String escolhaDoCaminho){
 
         switch (escolhaDoCaminho){
@@ -410,6 +411,12 @@ public class Main {
 
     }
 
+    /**
+     * Função para descobrir se o animal existe no arquivo utilizando o IdAnimal como comparador
+     * @param matrizEscolhida
+     * @param idAnimal
+     * @return true se o animal existir || false se não existir
+     */
     public static boolean animalExiste(String[][] matrizEscolhida,String idAnimal){
         boolean temIdAnimal = false;
 
@@ -421,7 +428,12 @@ public class Main {
 
         return temIdAnimal;
     }
-
+    /**
+     * Fuinção que busca os padrinhos de um animal
+     * @param matrizEscolhidaInteracao
+     * @param matrizCliente
+     * @param idAnimal
+     */
     public static void procurarApadrinhamentoPorIdAnimal(String[][] matrizEscolhidaInteracao, String[][] matrizCliente, String idAnimal){
 
         for (int linha = 0; linha < matrizEscolhidaInteracao.length; linha++) {
@@ -446,13 +458,11 @@ public class Main {
     /**
      * Função para descobrir o mais rentável
      * @param matrizInteracoes
-     * @return
      */
     public static void espetaculoMaisRentavel(String[][] matrizInteracoes){
 
         String nomeEventoAtual,idAnimalEspetaculoMaisRentavel="", nomeEspetaculoMaisRentavel="";
         double rendimentoEspetaculoMaisRentavel=0;
-
 
         for (int linha = 0; linha < matrizInteracoes.length; linha++) {
             if (matrizInteracoes[linha][2].equals("ESPETACULO")) {
@@ -467,15 +477,11 @@ public class Main {
                         rendimentoTotalEventoAtual+=Double.parseDouble(matrizInteracoes[linhaBusca][5]);
                     }
                 }
-
                 if(rendimentoTotalEventoAtual>rendimentoEspetaculoMaisRentavel){
                     nomeEspetaculoMaisRentavel=nomeEventoAtual;
                     rendimentoEspetaculoMaisRentavel=rendimentoTotalEventoAtual;
                     idAnimalEspetaculoMaisRentavel=matrizInteracoes[linha][3];
                 }
-
-
-
             }
         }
 
@@ -485,9 +491,217 @@ public class Main {
 
     }
 
+    /**
+     * Função para obter os habitats sem repetição
+     * @param matrizAnimais
+     * @return array com habitats unicos
+     */
+    public static String[] habitatsUnicos(String[][] matrizAnimais) {
+
+        String[] arrayHabitatsTotal = new String[matrizAnimais.length];
+        int indexDisponivel = 0;
+
+        // Este ciclo itera para cada animal da matriz
+        for (int linhaAnimais = 0; linhaAnimais < matrizAnimais.length; linhaAnimais++) {
+
+            boolean encontrei = false;
+
+            // matrizAnimais[linhaAnimais][3] é o habitat do animal atual
+
+            // Este ciclo itera para cada habitat do meu array sem duplicados
+            for (int habitatAtual = 0; habitatAtual < arrayHabitatsTotal.length; habitatAtual++) {
+                if (matrizAnimais[linhaAnimais][3].equals(arrayHabitatsTotal[habitatAtual])) {
+                    encontrei = true;
+                }
+            }
+
+            if (!encontrei) { // encontrei == false
+                arrayHabitatsTotal[indexDisponivel] = matrizAnimais[linhaAnimais][3];
+                indexDisponivel++;
+            }
+
+        }
+
+        int quantidadeDeHabitats = indexDisponivel;
+
+        // Limpeza - colocar o array à medida
+        String[] arrayHabitatsMedida = new String[quantidadeDeHabitats];
+
+        for (int i = 0; i < arrayHabitatsMedida.length; i++) {
+            arrayHabitatsMedida[i] = arrayHabitatsTotal[i];
+        }
+
+        return arrayHabitatsMedida;
+
+    }
+
+    /**
+     * Função para contar a quantidade de animais por habitat
+     * @param matrizAnimais
+     * @param habitat
+     * @return contagem nde animais por habitat indicado
+     */
+    public static int numeroAnimaisHabitat(String[][] matrizAnimais, String habitat) {
+
+        int contagemAnimais = 0;
+
+        for (int linha = 0; linha < matrizAnimais.length; linha++) {
+            if (matrizAnimais[linha][3].equals(habitat)) {
+                contagemAnimais++;
+            }
+        }
+        return contagemAnimais;
+    }
+
+    /**
+     *Função para separar os animais pertencentes a cada habitat
+     * @param matrizAnimais
+     * @param habitat
+     * @return array de animais de um habitat
+     */
+    public static String[] animaisDeUmHabitat(String[][] matrizAnimais, String habitat) {
+        String[] animaisDoHabitat = new String[matrizAnimais.length];
+        int indexDisponivel = 0;
+
+        for (int linhaAnimal = 0; linhaAnimal < matrizAnimais.length; linhaAnimal++) {
+            if (matrizAnimais[linhaAnimal][3].equals(habitat)) {
+                // Encontramos um animal deste Habitat
+                animaisDoHabitat[indexDisponivel] = matrizAnimais[linhaAnimal][0];
+                indexDisponivel++;
+            }
+        }
+
+        int quantidadeAnimais = indexDisponivel;
+
+        String[] animaisDoHabitatMedida = new String[quantidadeAnimais];
+
+        for (int i = 0; i < animaisDoHabitatMedida.length; i++) {
+            animaisDoHabitatMedida[i] = animaisDoHabitat[i];
+        }
+
+        return animaisDoHabitatMedida;
+    }
+    /**
+     * Função para contar a quantidade de interações para um animal
+     * @param matrizInteracoes
+     * @param idAnimal
+     * @return contagem de interações
+     */
+    public static int interacoesAnimal(String[][] matrizInteracoes, String idAnimal) {
+        int contagemInteracoes = 0;
+
+        for (int linhaInteracao = 0; linhaInteracao < matrizInteracoes.length; linhaInteracao++) {
+
+            if (matrizInteracoes[linhaInteracao][3].equals(idAnimal)) {
+                // Contar a interação
+                contagemInteracoes++;
+            }
+        }
+        return contagemInteracoes;
+    }
+
+    /**
+     * Função para calcular os rendimentos de um animal
+     * @param matrizInteracoes
+     * @param idAnimal
+     * @return rendimento total
+     */
+    public static double rendimentosAnimal(String[][] matrizInteracoes, String idAnimal) {
+        double rendimentoTotal = 0;
+
+        for (int linhaInteracao = 0; linhaInteracao < matrizInteracoes.length; linhaInteracao++) {
+
+            if (matrizInteracoes[linhaInteracao][3].equals(idAnimal)) {
+                // Incrementar ao rendimento
+                rendimentoTotal += Double.parseDouble(matrizInteracoes[linhaInteracao][5]);
+            }
+        }
+        return rendimentoTotal;
+    }
+
+    /**
+     * Função para imprimir as estaisticas por habitat
+     * @param matrizAnimais
+     * @param matrizInteracoes
+     */
+    public static void estatisticasPorHabitat(String[][] matrizAnimais, String[][] matrizInteracoes) {
+
+        String[] habitatsSemDuplicados = habitatsUnicos(matrizAnimais);
+
+        for (int i = 0; i < habitatsSemDuplicados.length; i++) {
+            System.out.println("\nHabitat: " + habitatsSemDuplicados[i]);
+            System.out.println("  Nº de Animais: " + numeroAnimaisHabitat(matrizAnimais, habitatsSemDuplicados[i]));
+
+            int numInteracoesTotal = 0;
+            double receitaTotal = 0;
+
+            String[] idsAnimaisHabitatAtual = animaisDeUmHabitat(matrizAnimais, habitatsSemDuplicados[i]);
+
+            for (int indexAnimal = 0; indexAnimal < idsAnimaisHabitatAtual.length; indexAnimal++) {
+                numInteracoesTotal += interacoesAnimal(matrizInteracoes, idsAnimaisHabitatAtual[indexAnimal]);
+                receitaTotal += rendimentosAnimal(matrizInteracoes, idsAnimaisHabitatAtual[indexAnimal]);
+
+            }
+
+            System.out.println("  Nº de Interações: " + numInteracoesTotal);
+            System.out.println("  Receita Associada: " + receitaTotal + " €");
 
 
+        }
+    }
 
+    /**
+     * Função para retornar o nome do animal por um id
+     * @param matrizAnimais
+     * @param idAnimal
+     * @return nome do animal
+     */
+    public static String nomeAnimal(String[][] matrizAnimais, String idAnimal) {
+        for (int linha = 0; linha < matrizAnimais.length; linha++) {
+            if (matrizAnimais[linha][0].equals(idAnimal)) {
+                return matrizAnimais[linha][1];
+            }
+        }
+
+        return "N/A";
+    }
+
+    /**
+     * Função para imprmir a especie do animal por um id animal
+     * @param matrizAnimais
+     * @param idAnimal
+     * @return especie do animal
+     */
+    public static String especieAnimal(String[][] matrizAnimais, String idAnimal) {
+        for (int linha = 0; linha < matrizAnimais.length; linha++) {
+            if (matrizAnimais[linha][0].equals(idAnimal)) {
+                return matrizAnimais[linha][2];
+            }
+        }
+
+        return "N/A";
+    }
+
+    /**
+     * Função para imprimir os animais por habitat
+     * @param matrizAnimais
+     */
+    public static void imprimirAnimaisHabitat(String[][] matrizAnimais) {
+        String[] habitatsSemDuplicados = habitatsUnicos(matrizAnimais);
+
+        for (int i = 0; i < habitatsSemDuplicados.length; i++) {
+            System.out.println("\n***** " + habitatsSemDuplicados[i] + " *****");
+
+            String[] idsAnimaisHabitatAtual = animaisDeUmHabitat(matrizAnimais, habitatsSemDuplicados[i]);
+            for (int indexAnimal = 0; indexAnimal < idsAnimaisHabitatAtual.length; indexAnimal++) {
+                System.out.print(nomeAnimal(matrizAnimais,idsAnimaisHabitatAtual[indexAnimal]));
+                System.out.print(" | ");
+                System.out.println(especieAnimal(matrizAnimais,idsAnimaisHabitatAtual[indexAnimal]));
+            }
+
+            System.out.println();
+        }
+    }
 
 
 

@@ -1,0 +1,6 @@
+idAnimal;nome;especie;habitat;dieta;perigoExtincao
+A01;Byte;Lontra;Rio Binário;Carnívoro;NAO
+A02;Kernel;Leão;Savana Algorítmica;Carnívoro;SIM
+A03;Zé;Gorila;Floresta Tropical;Omnívoro;SIM
+A04;Python;Píton-real;Terrário de Répteis;Carnívoro;NAO
+A05;Ruby;Arara-vermelha;Floresta Tropical;Herbívoro;SIM
